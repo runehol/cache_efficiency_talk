@@ -1,0 +1,5 @@
+FetchContent_GetProperties(xsimd)
+if(NOT xsimd_POPULATED)
+    FetchContent_Populate(xsimd)
+    add_subdirectory(${xsimd_SOURCE_DIR} ${xsimd_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()

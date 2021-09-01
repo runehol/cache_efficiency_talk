@@ -1,0 +1,6 @@
+set(XTENSOR_USE_XSIMD ON CACHE INTERNAL "")
+FetchContent_GetProperties(xtensor)
+if(NOT xtensor_POPULATED)
+    FetchContent_Populate(xtensor)
+    add_subdirectory(${xtensor_SOURCE_DIR} ${xtensor_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
