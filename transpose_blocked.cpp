@@ -4,8 +4,8 @@
 
 void transpose_blocked(Matrix2D &out, const Matrix2D &in)
 {
-    constexpr size_t blocking_size_j = 64 / sizeof(in.data[0]);
-    constexpr size_t blocking_size_i = 8;
+    constexpr size_t blocking_size_j =  8;
+    constexpr size_t blocking_size_i = 32;
     for(size_t j0 = 0; j0 < out.shape[0]; j0 += blocking_size_j)
     {
         size_t jend = std::min(j0+blocking_size_j, out.shape[0]);

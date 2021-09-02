@@ -22,12 +22,6 @@ BENCHMARK(transpose_simple)->Args({40, 100});
 BENCHMARK(transpose_simple)->Args({100, 1000});
 BENCHMARK(transpose_simple)->Args({1000, 1000});
 
-BENCHMARK(transpose_simple)->Args({40, 100});
-BENCHMARK(transpose_simple)->Args({3200, 200});
-BENCHMARK(transpose_simple)->Args({16000, 1000});
-BENCHMARK(transpose_simple)->Args({4096, 256});
-BENCHMARK(transpose_simple)->Args({16384, 1024});
-
 
 
 
@@ -48,9 +42,3 @@ static void transpose_blocked(benchmark::State& state)
 BENCHMARK(transpose_blocked)->Args({40, 100});
 BENCHMARK(transpose_blocked)->Args({100, 1000});
 BENCHMARK(transpose_blocked)->Args({1000, 1000});
-
-
-BENCHMARK(transpose_blocked)->Args({3200, 200});
-BENCHMARK(transpose_blocked)->Args({16000, 1000});
-BENCHMARK(transpose_blocked)->Args({4096, 256});
-BENCHMARK(transpose_blocked)->Args({16384, 1024});
