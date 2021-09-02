@@ -49,8 +49,3 @@ BENCHMARK(transpose_blocked)->Args({16, 1000, 1000});
 BENCHMARK(transpose_blocked)->Args({16, 256, 256});
 BENCHMARK(transpose_blocked)->Args({16, 1024, 1024});
 BENCHMARK(transpose_blocked)->Args({1024, 1024, 1024});
-
-
-
-// Run the benchmark
-BENCHMARK_MAIN();

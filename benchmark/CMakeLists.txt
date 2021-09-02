@@ -1,7 +1,9 @@
 add_executable(benchmark_cache_efficiency_talk)
 
 target_sources(benchmark_cache_efficiency_talk PRIVATE
+	benchmark_traversal.cpp
 	benchmark_transpose.cpp
+	benchmark_main.cpp
 	)
 
 target_link_libraries(benchmark_cache_efficiency_talk PRIVATE benchmark::benchmark)

@@ -15,17 +15,17 @@ struct Tensor3D
 
     }
 
-    int32_t operator()(size_t k, size_t j, size_t i) const
+    float operator()(size_t k, size_t j, size_t i) const
     {
         return data[strides[0]*k + strides[1]*j + i];
     }
 
-    int32_t &operator()(size_t k, size_t j, size_t i)
+    float &operator()(size_t k, size_t j, size_t i)
     {
         return data[strides[0]*k + strides[1]*j + i];
     }
 
-    std::vector<int32_t> data;
+    std::vector<float> data;
     std::array<size_t, 3> shape;
     std::array<size_t, 3> strides;
 };
