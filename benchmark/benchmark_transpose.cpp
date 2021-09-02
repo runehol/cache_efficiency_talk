@@ -18,6 +18,11 @@ static void transpose_simple(benchmark::State& state)
 }
 
 
+BENCHMARK(transpose_simple)->Args({40, 100});
+BENCHMARK(transpose_simple)->Args({100, 1000});
+BENCHMARK(transpose_simple)->Args({1000, 1000});
+
+BENCHMARK(transpose_simple)->Args({40, 100});
 BENCHMARK(transpose_simple)->Args({3200, 200});
 BENCHMARK(transpose_simple)->Args({16000, 1000});
 BENCHMARK(transpose_simple)->Args({4096, 256});
@@ -39,6 +44,10 @@ static void transpose_blocked(benchmark::State& state)
     }
     state.SetBytesProcessed(n_iters * src.data.size()*sizeof(src.data[0]));
 }
+
+BENCHMARK(transpose_blocked)->Args({40, 100});
+BENCHMARK(transpose_blocked)->Args({100, 1000});
+BENCHMARK(transpose_blocked)->Args({1000, 1000});
 
 
 BENCHMARK(transpose_blocked)->Args({3200, 200});
