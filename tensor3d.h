@@ -4,6 +4,7 @@
 #include <vector>
 #include <array>
 #include <cstddef>
+#include <cstdlib>
 
 struct Tensor3D
 {
@@ -12,7 +13,10 @@ struct Tensor3D
           shape{a, b, c},
           strides{b*c, c, 1}
     {
-
+        for(size_t i = 0; i < data.size(); ++i)
+        {
+            data[i] = std::rand();
+        }
     }
 
     float operator()(size_t k, size_t j, size_t i) const

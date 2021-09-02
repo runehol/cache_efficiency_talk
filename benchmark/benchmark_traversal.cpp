@@ -1,59 +1,70 @@
 #include <benchmark/benchmark.h>
 
-#include <vector>
-#include <list>
-#include <set>
-#include <cstdlib>
+#include "tensor3d.h"
 
 
-
-template<typename Container>
-auto sum(const Container &vec)
+static float sum_inner_to_outer(const Tensor3D &tens)
 {
-    auto acc = *vec.begin();
-    for(auto elm: vec)
+    float sum = 0;
+    for(size_t k = 0; k < tens.shape[0]; ++k)
     {
-        acc += elm;
+        for(size_t j = 0; j < tens.shape[1]; ++j)
+        {
+            for(size_t i = 0; i < tens.shape[2]; ++i)
+            {
+                sum += tens.data[k*tens.strides[0] + j*tens.strides[1] + i];
+            }
+        }
     }
-    return acc;
+    return sum;
+}
+
+static float sum_outer_to_inner(const Tensor3D &tens)
+{
+    float sum = 0;
+    for(size_t i = 0; i < tens.shape[2]; ++i)
+    {
+        for(size_t j = 0; j < tens.shape[1]; ++j)
+        {
+            for(size_t k = 0; k < tens.shape[0]; ++k)
+            {
+                sum += tens.data[k*tens.strides[0] + j*tens.strides[1] + i];
+            }
+        }
+    }
+    return sum;
 }
 
 
-template<typename Container> Container make_container(size_t sz)
+static void benchmark_sum_inner_to_outer(benchmark::State& state)
 {
-    Container c;
-    for(size_t i = 0; i < sz; ++i)
-    {
-        c.push_back(std::rand());
-    }
-    return c;
-}
-
-template<> std::set<float> make_container(size_t sz)
-{
-    std::set<float> c;
-    for(size_t i = 0; i < sz; ++i)
-    {
-        c.insert(std::rand());
-    }
-    return c;
-}
-
-template<typename Container>
-static void sum_container(benchmark::State& state)
-{
-    Container container = make_container<Container>(100000);
+    Tensor3D src(state.range(0), state.range(1), state.range(2));
 
     size_t n_iters = 0;
     for (auto _: state)
     {
-        float result = sum(container);
-        benchmark::DoNotOptimize(result);
+        auto sum = sum_inner_to_outer(src);
+        benchmark::DoNotOptimize(sum);
         ++n_iters;
     }
-    state.SetBytesProcessed(n_iters * container.size()*sizeof(*container.begin()));
+    state.SetBytesProcessed(n_iters * src.data.size()*sizeof(src.data[0]));
 }
 
-BENCHMARK_TEMPLATE(sum_container, std::vector<float>);
-BENCHMARK_TEMPLATE(sum_container, std::list<float>);
-BENCHMARK_TEMPLATE(sum_container, std::set<float>);
+static void benchmark_sum_outer_to_inner(benchmark::State& state)
+{
+    Tensor3D src(state.range(0), state.range(1), state.range(2));
+
+    size_t n_iters = 0;
+    for (auto _: state)
+    {
+        auto sum = sum_outer_to_inner(src);
+        benchmark::DoNotOptimize(sum);
+        ++n_iters;
+    }
+    state.SetBytesProcessed(n_iters * src.data.size()*sizeof(src.data[0]));
+}
+
+
+BENCHMARK(benchmark_sum_inner_to_outer)->Args({100, 1000, 100});
+
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({100, 1000, 100});
