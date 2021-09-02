@@ -15,7 +15,7 @@ void transpose_blocked(Tensor3D &out, const Tensor3D &in)
             {
                 size_t jend = std::min(j0+blocking_size_j, out.shape[1]);
 
-                for(size_t j = i0; j < jend; ++j)
+                for(size_t j = j0; j < jend; ++j)
                 {
                     size_t iend = std::min(i0+blocking_size_i, out.shape[2]);
                     for(size_t i = i0; i < iend; ++i)

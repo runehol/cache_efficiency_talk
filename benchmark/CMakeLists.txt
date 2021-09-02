@@ -1,0 +1,14 @@
+add_executable(benchmark_cache_efficiency_talk)
+
+target_sources(benchmark_cache_efficiency_talk PRIVATE
+	benchmark_transpose.cpp
+	)
+
+target_link_libraries(benchmark_cache_efficiency_talk PRIVATE benchmark::benchmark)
+target_link_libraries(benchmark_cache_efficiency_talk PRIVATE cache_efficiency_talk)
+
+add_custom_target(run_benchmark
+COMMAND benchmark_cache_efficiency_talk
+DEPENDS benchmark_cache_efficiency_talk
+USES_TERMINAL
+)

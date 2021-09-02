@@ -1,7 +1,5 @@
 #include <benchmark/benchmark.h>
-#include "tensor3d.h"
-void transpose_simple(Tensor3D &out, const Tensor3D &in);
-void transpose_blocked(Tensor3D &out, const Tensor3D &in);
+#include "transpose.h"
 
 
 
@@ -20,7 +18,6 @@ static void transpose_simple(benchmark::State& state)
 }
 
 
-BENCHMARK(transpose_simple)->Args({16, 16, 16});
 BENCHMARK(transpose_simple)->Args({64, 64, 64});
 BENCHMARK(transpose_simple)->Args({16, 200, 200});
 BENCHMARK(transpose_simple)->Args({16, 1000, 1000});
@@ -46,7 +43,6 @@ static void transpose_blocked(benchmark::State& state)
 }
 
 
-BENCHMARK(transpose_blocked)->Args({16, 16, 16});
 BENCHMARK(transpose_blocked)->Args({64, 64, 64});
 BENCHMARK(transpose_blocked)->Args({16, 200, 200});
 BENCHMARK(transpose_blocked)->Args({16, 1000, 1000});

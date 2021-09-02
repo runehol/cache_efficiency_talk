@@ -18,24 +18,19 @@ add_library(project_options INTERFACE)
 target_compile_features(project_options INTERFACE cxx_std_17)
 
 
+add_library(cache_efficiency_talk STATIC)
+
+target_sources(cache_efficiency_talk PRIVATE
+	transpose_simple.cpp
+	transpose_blocked.cpp
+	)
+
+target_include_directories(cache_efficiency_talk PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 
 # Main targets built by this project
 
 add_subdirectory(dependencies)
 
-
-add_executable(benchmark_cache_efficiency_talk)
-
-target_sources(benchmark_cache_efficiency_talk PRIVATE
-	transpose_simple.cpp
-	transpose_blocked.cpp
-	benchmark.cpp
-	)
-
-target_link_libraries(benchmark_cache_efficiency_talk PRIVATE benchmark::benchmark)
-
-add_custom_target(run_benchmark
-COMMAND benchmark_cache_efficiency_talk
-DEPENDS benchmark_cache_efficiency_talk
-USES_TERMINAL
-)
+add_subdirectory(benchmark)
+add_subdirectory(tests)
