@@ -25,6 +25,9 @@ target_sources(cache_efficiency_talk PRIVATE
 	transpose_blocked.cpp
 	)
 
+SET(CMAKE_CXX_FLAGS -Wno-psabi)
+
+
 target_include_directories(cache_efficiency_talk PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 

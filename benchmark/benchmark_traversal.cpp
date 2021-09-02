@@ -78,4 +78,39 @@ BENCHMARK(benchmark_sum_outer_to_inner)->Args({16/4, 10, 100}); // 14 KB -> L1
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 10, 100}); // 72 KB -> L2
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({3000/4, 10, 100}); // 3000 KB -> DRAM
 
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 1, 1024}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({16/4, 16, 64}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 16, 64}); // 72 KB -> L2
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({3000/4, 16, 64}); // 3000 KB -> DRAM
+
+
+
+
+static float sum_random(const Tensor3D &tens)
+{
+    float sum = 0;
+    for(size_t i = 0; i < tens.data.size(); ++i)
+    {
+        size_t idx = std::rand() % tens.data.size();
+        sum += tens.data[idx];
+    }
+    return sum;
+}
+
+
+static void benchmark_sum_random(benchmark::State& state)
+{
+    Tensor3D src(state.range(0), state.range(1), state.range(2));
+
+    size_t n_iters = 0;
+    for (auto _: state)
+    {
+        auto sum = sum_random(src);
+        benchmark::DoNotOptimize(sum);
+        ++n_iters;
+    }
+    state.SetBytesProcessed(n_iters * src.data.size()*sizeof(src.data[0]));
+}
+
+BENCHMARK(benchmark_sum_random)->Args({16/4, 10, 100}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_random)->Args({72/4, 10, 100}); // 72 KB -> L2
+BENCHMARK(benchmark_sum_random)->Args({3000/4, 10, 100}); // 3000 KB -> DRAM
