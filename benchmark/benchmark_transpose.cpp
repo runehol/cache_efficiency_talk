@@ -23,7 +23,7 @@ BENCHMARK(transpose_simple)->Args({16, 200, 200});
 BENCHMARK(transpose_simple)->Args({16, 1000, 1000});
 BENCHMARK(transpose_simple)->Args({16, 256, 256});
 BENCHMARK(transpose_simple)->Args({16, 1024, 1024});
-BENCHMARK(transpose_simple)->Args({1024, 1024, 1024});
+//BENCHMARK(transpose_simple)->Args({1024, 1024, 1024});
 
 
 
@@ -48,4 +48,4 @@ BENCHMARK(transpose_blocked)->Args({16, 200, 200});
 BENCHMARK(transpose_blocked)->Args({16, 1000, 1000});
 BENCHMARK(transpose_blocked)->Args({16, 256, 256});
 BENCHMARK(transpose_blocked)->Args({16, 1024, 1024});
-BENCHMARK(transpose_blocked)->Args({1024, 1024, 1024});
+//BENCHMARK(transpose_blocked)->Args({1024, 1024, 1024});
