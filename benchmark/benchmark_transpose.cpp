@@ -5,8 +5,8 @@
 
 static void transpose_simple(benchmark::State& state)
 {
-    Tensor3D src(state.range(0), state.range(1), state.range(2));
-    Tensor3D dest(state.range(0), state.range(2), state.range(1));
+    Matrix2D src(state.range(0), state.range(1));
+    Matrix2D dest(state.range(1), state.range(0));
 
     size_t n_iters = 0;
     for (auto _: state)
@@ -18,20 +18,18 @@ static void transpose_simple(benchmark::State& state)
 }
 
 
-BENCHMARK(transpose_simple)->Args({64, 64, 64});
-BENCHMARK(transpose_simple)->Args({16, 200, 200});
-BENCHMARK(transpose_simple)->Args({16, 1000, 1000});
-BENCHMARK(transpose_simple)->Args({16, 256, 256});
-BENCHMARK(transpose_simple)->Args({16, 1024, 1024});
-//BENCHMARK(transpose_simple)->Args({1024, 1024, 1024});
+BENCHMARK(transpose_simple)->Args({3200, 200});
+BENCHMARK(transpose_simple)->Args({16000, 1000});
+BENCHMARK(transpose_simple)->Args({4096, 256});
+BENCHMARK(transpose_simple)->Args({16384, 1024});
 
 
 
 
 static void transpose_blocked(benchmark::State& state)
 {
-    Tensor3D src(state.range(0), state.range(1), state.range(2));
-    Tensor3D dest(state.range(0), state.range(2), state.range(1));
+    Matrix2D src(state.range(0), state.range(1));
+    Matrix2D dest(state.range(1), state.range(0));
 
     size_t n_iters = 0;
     for (auto _: state)
@@ -43,9 +41,7 @@ static void transpose_blocked(benchmark::State& state)
 }
 
 
-BENCHMARK(transpose_blocked)->Args({64, 64, 64});
-BENCHMARK(transpose_blocked)->Args({16, 200, 200});
-BENCHMARK(transpose_blocked)->Args({16, 1000, 1000});
-BENCHMARK(transpose_blocked)->Args({16, 256, 256});
-BENCHMARK(transpose_blocked)->Args({16, 1024, 1024});
-//BENCHMARK(transpose_blocked)->Args({1024, 1024, 1024});
+BENCHMARK(transpose_blocked)->Args({3200, 200});
+BENCHMARK(transpose_blocked)->Args({16000, 1000});
+BENCHMARK(transpose_blocked)->Args({4096, 256});
+BENCHMARK(transpose_blocked)->Args({16384, 1024});

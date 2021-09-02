@@ -1,19 +1,16 @@
 #include <benchmark/benchmark.h>
 
-#include "tensor3d.h"
+#include "matrix2d.h"
 
 
-static float sum_inner_to_outer(const Tensor3D &tens)
+static float sum_inner_to_outer(const Matrix2D &tens)
 {
     float sum = 0;
-    for(size_t k = 0; k < tens.shape[0]; ++k)
+    for(size_t j = 0; j < tens.shape[0]; ++j)
     {
-        for(size_t j = 0; j < tens.shape[1]; ++j)
+        for(size_t i = 0; i < tens.shape[1]; ++i)
         {
-            for(size_t i = 0; i < tens.shape[2]; ++i)
-            {
-                sum += tens.data[k*tens.strides[0] + j*tens.strides[1] + i];
-            }
+            sum += tens.data[j*tens.stride + i];
         }
     }
     return sum;
@@ -21,7 +18,7 @@ static float sum_inner_to_outer(const Tensor3D &tens)
 
 static void benchmark_sum_inner_to_outer(benchmark::State& state)
 {
-    Tensor3D src(state.range(0), state.range(1), state.range(2));
+    Matrix2D src(state.range(0), state.range(1));
 
     size_t n_iters = 0;
     for (auto _: state)
@@ -34,26 +31,23 @@ static void benchmark_sum_inner_to_outer(benchmark::State& state)
 }
 
 
-BENCHMARK(benchmark_sum_inner_to_outer)->Args({16/4, 10, 100}); // 14 KB -> L1
-BENCHMARK(benchmark_sum_inner_to_outer)->Args({72/4, 10, 100}); // 72 KB -> L2
-BENCHMARK(benchmark_sum_inner_to_outer)->Args({3000/4, 10, 100}); // 3000 KB -> DRAM
+BENCHMARK(benchmark_sum_inner_to_outer)->Args({16/4, 1000}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_inner_to_outer)->Args({72/4, 1000}); // 72 KB -> L2
+BENCHMARK(benchmark_sum_inner_to_outer)->Args({3000/4, 1000}); // 3000 KB -> DRAM
 
 
 
 
 
 
-static float sum_outer_to_inner(const Tensor3D &tens)
+static float sum_outer_to_inner(const Matrix2D &tens)
 {
     float sum = 0;
-    for(size_t i = 0; i < tens.shape[2]; ++i)
+    for(size_t i = 0; i < tens.shape[1]; ++i)
     {
-        for(size_t j = 0; j < tens.shape[1]; ++j)
+        for(size_t j = 0; j < tens.shape[0]; ++j)
         {
-            for(size_t k = 0; k < tens.shape[0]; ++k)
-            {
-                sum += tens.data[k*tens.strides[0] + j*tens.strides[1] + i];
-            }
+            sum += tens.data[i + j*tens.stride];
         }
     }
     return sum;
@@ -62,7 +56,7 @@ static float sum_outer_to_inner(const Tensor3D &tens)
 
 static void benchmark_sum_outer_to_inner(benchmark::State& state)
 {
-    Tensor3D src(state.range(0), state.range(1), state.range(2));
+    Matrix2D src(state.range(0), state.range(1));
 
     size_t n_iters = 0;
     for (auto _: state)
@@ -74,18 +68,18 @@ static void benchmark_sum_outer_to_inner(benchmark::State& state)
     state.SetBytesProcessed(n_iters * src.data.size()*sizeof(src.data[0]));
 }
 
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({16/4, 10, 100}); // 14 KB -> L1
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 10, 100}); // 72 KB -> L2
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({3000/4, 10, 100}); // 3000 KB -> DRAM
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({16/4, 1000}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 1000}); // 72 KB -> L2
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({3000/4, 1000}); // 3000 KB -> DRAM
 
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({16/4, 16, 64}); // 14 KB -> L1
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 16, 64}); // 72 KB -> L2
-BENCHMARK(benchmark_sum_outer_to_inner)->Args({3000/4, 16, 64}); // 3000 KB -> DRAM
-
-
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({16/4, 1024}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({72/4, 1024}); // 72 KB -> L2
+BENCHMARK(benchmark_sum_outer_to_inner)->Args({3000/4, 1024}); // 3000 KB -> DRAM
 
 
-static float sum_random(const Tensor3D &tens)
+
+
+static float sum_random(const Matrix2D &tens)
 {
     float sum = 0;
     for(size_t i = 0; i < tens.data.size(); ++i)
@@ -99,7 +93,7 @@ static float sum_random(const Tensor3D &tens)
 
 static void benchmark_sum_random(benchmark::State& state)
 {
-    Tensor3D src(state.range(0), state.range(1), state.range(2));
+    Matrix2D src(state.range(0), state.range(1));
 
     size_t n_iters = 0;
     for (auto _: state)
@@ -111,6 +105,6 @@ static void benchmark_sum_random(benchmark::State& state)
     state.SetBytesProcessed(n_iters * src.data.size()*sizeof(src.data[0]));
 }
 
-BENCHMARK(benchmark_sum_random)->Args({16/4, 10, 100}); // 14 KB -> L1
-BENCHMARK(benchmark_sum_random)->Args({72/4, 10, 100}); // 72 KB -> L2
-BENCHMARK(benchmark_sum_random)->Args({3000/4, 10, 100}); // 3000 KB -> DRAM
+BENCHMARK(benchmark_sum_random)->Args({16/4, 1000}); // 14 KB -> L1
+BENCHMARK(benchmark_sum_random)->Args({72/4, 1000}); // 72 KB -> L2
+BENCHMARK(benchmark_sum_random)->Args({3000/4, 1000}); // 3000 KB -> DRAM
