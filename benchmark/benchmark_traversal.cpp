@@ -189,3 +189,4 @@ static void benchmark_sum_random(benchmark::State& state)
 BENCHMARK(benchmark_sum_random)->Args({4, 1000}); // 16 KB -> L1
 BENCHMARK(benchmark_sum_random)->Args({100, 1000}); // 400 KB -> L2
 BENCHMARK(benchmark_sum_random)->Args({1000, 1000}); // 4000 KB -> DRAM
+BENCHMARK(benchmark_sum_random)->Args({10000, 1000}); // 40000 KB -> DRAM
