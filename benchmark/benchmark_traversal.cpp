@@ -40,6 +40,24 @@ BENCHMARK(benchmark_sum_inner_to_outer)->Args({1000, 1000}); // 4000 KB -> DRAM
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 static float sum_outer_to_inner(const Matrix2D &tens)
 {
     float sum = 0;
@@ -72,9 +90,63 @@ BENCHMARK(benchmark_sum_outer_to_inner)->Args({4, 1000}); // 16 KB -> L1
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({100, 1000}); // 400 KB -> L2
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({1000, 1000}); // 4000 KB -> DRAM
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({4, 1024}); // 16 KB -> L1
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({100, 1024}); // 400 KB -> L2
 BENCHMARK(benchmark_sum_outer_to_inner)->Args({1000, 1024}); // 3000 KB -> DRAM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
