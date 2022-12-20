@@ -36,4 +36,4 @@ target_include_directories(cache_efficiency_talk PUBLIC ${CMAKE_CURRENT_SOURCE_D
 add_subdirectory(dependencies)
 
 add_subdirectory(benchmark)
-add_subdirectory(tests)
+#add_subdirectory(tests)
